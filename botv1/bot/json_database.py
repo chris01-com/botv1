@@ -1,4 +1,3 @@
-
 import json
 import os
 import asyncio
@@ -25,10 +24,7 @@ class JSONDatabase:
         
     async def initialize(self):
         """Initialize the database and load existing data"""
-        # Create data directory if it doesn't exist
         os.makedirs(self.data_dir, exist_ok=True)
-        
-        # Load existing data
         await self._load_data()
         
     async def _load_data(self):
@@ -50,7 +46,6 @@ class JSONDatabase:
     
     async def _save_data(self):
         """Save all data to JSON files and commit to git"""
-        # Save each data structure to its respective file
         data_files = [
             (self.quests_file, self.quests),
             (self.progress_file, self.quest_progress),
@@ -62,23 +57,16 @@ class JSONDatabase:
             with open(file_path, 'w') as f:
                 json.dump(data, f, indent=2, default=str)
         
-        # Auto-commit to git
         await self._git_commit()
     
     async def _git_commit(self):
         """Automatically commit changes to git"""
         try:
-            # Add all data files
             subprocess.run(['git', 'add', 'data/'], check=False, capture_output=True)
-            
-            # Commit with timestamp
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             commit_msg = f"Auto-update bot data - {timestamp}"
             subprocess.run(['git', 'commit', '-m', commit_msg], check=False, capture_output=True)
-            
-            # Push to remote (if configured)
             subprocess.run(['git', 'push'], check=False, capture_output=True)
-            
         except Exception as e:
             print(f"Git commit failed: {e}")
     
@@ -121,7 +109,7 @@ class JSONDatabase:
                 required_role_ids=data.get('required_role_ids', [])
             )
         return None
-    
+
     async def get_guild_quests(self, guild_id: int, status: str = None) -> List[Quest]:
         """Get all quests for a guild, optionally filtered by status"""
         quests = []
@@ -149,22 +137,17 @@ class JSONDatabase:
         """Delete a quest"""
         if quest_id in self.quests:
             del self.quests[quest_id]
-            
-            # Also remove related progress entries
             to_remove = []
             for key, progress in self.quest_progress.items():
                 if progress.get('quest_id') == quest_id:
                     to_remove.append(key)
-            
             for key in to_remove:
                 del self.quest_progress[key]
-                
             await self._save_data()
     
     async def save_quest_progress(self, progress: QuestProgress):
         """Save quest progress to the database"""
         key = f"{progress.user_id}_{progress.quest_id}"
-        
         progress_data = {
             'quest_id': progress.quest_id,
             'user_id': progress.user_id,
@@ -184,7 +167,6 @@ class JSONDatabase:
     async def get_user_quest_progress(self, user_id: int, quest_id: str) -> Optional[QuestProgress]:
         """Get most recent progress for a specific user and quest"""
         key = f"{user_id}_{quest_id}"
-        
         if key in self.quest_progress:
             data = self.quest_progress[key]
             return QuestProgress(
@@ -204,7 +186,6 @@ class JSONDatabase:
     async def get_user_quests(self, user_id: int, guild_id: int = None) -> List[QuestProgress]:
         """Get all quests for a user"""
         progresses = []
-        
         for data in self.quest_progress.values():
             if data['user_id'] == user_id:
                 if guild_id is None or data['guild_id'] == guild_id:
@@ -221,13 +202,11 @@ class JSONDatabase:
                         accepted_channel_id=data.get('accepted_channel_id')
                     )
                     progresses.append(progress)
-        
         return sorted(progresses, key=lambda x: x.accepted_at or datetime.min, reverse=True)
-    
+
     async def get_pending_approvals(self, creator_id: int, guild_id: int) -> List[tuple]:
         """Get quests pending approval for a quest creator"""
         pending = []
-        
         for progress_data in self.quest_progress.values():
             if progress_data['guild_id'] == guild_id and progress_data['status'] == 'completed':
                 quest_id = progress_data['quest_id']
@@ -240,13 +219,11 @@ class JSONDatabase:
                         progress_data.get('proof_image_urls', []),
                         quest_title
                     ))
-        
         return pending
     
     async def save_user_stats(self, stats: UserStats):
         """Save user statistics"""
         key = f"{stats.user_id}_{stats.guild_id}"
-        
         stats_data = {
             'user_id': stats.user_id,
             'guild_id': stats.guild_id,
@@ -263,7 +240,6 @@ class JSONDatabase:
     async def get_user_stats(self, user_id: int, guild_id: int) -> Optional[UserStats]:
         """Get user statistics"""
         key = f"{user_id}_{guild_id}"
-        
         if key in self.user_stats:
             data = self.user_stats[key]
             return UserStats(
@@ -276,11 +252,10 @@ class JSONDatabase:
                 last_quest_date=datetime.fromisoformat(data['last_quest_date']) if data.get('last_quest_date') else None
             )
         return None
-    
+
     async def get_guild_leaderboard(self, guild_id: int, limit: int = 10) -> List[UserStats]:
         """Get guild leaderboard"""
         stats = []
-        
         for data in self.user_stats.values():
             if data['guild_id'] == guild_id:
                 stat = UserStats(
@@ -294,7 +269,6 @@ class JSONDatabase:
                 )
                 stats.append(stat)
         
-        # Sort by completed quests, then by accepted quests
         stats.sort(key=lambda x: (x.quests_completed, x.quests_accepted), reverse=True)
         return stats[:limit]
     
