@@ -1,0 +1,18 @@
+{
+  "1192089605600710787_52b07c61": {
+    "quest_id": "52b07c61",
+    "user_id": 1192089605600710787,
+    "guild_id": 1266086795091906664,
+    "status": "approved",
+    "accepted_at": "2025-07-11T07:50:26.523672",
+    "completed_at": "2025-07-11T07:51:47.775255",
+    "proof_text": "donne",
+    "proof_image_urls": [
+      "https://cdn.discordapp.com/ephemeral-attachments/1393133657534890076/1393137680954560603/RobloxScreenShot20250708_224845015.png?ex=68721412&is=6870c292&hm=0d263ca24b3306235043e084beefc0c33b37815a751453ef306c03cb323f7c83&",
+      "https://cdn.discordapp.com/ephemeral-attachments/1393133657534890076/1393137681923440640/RobloxScreenShot20250708_125454735.png?ex=68721412&is=6870c292&hm=ed06b71fb64ca06cbecf127c0367d37c7b17facc1a8d8d5ccbac41d6c5520677&",
+      "https://cdn.discordapp.com/ephemeral-attachments/1393133657534890076/1393137682816696380/RobloxScreenShot20250708_224845015.png?ex=68721412&is=6870c292&hm=0a8e78066ced57494c78198cd461353f8263bca2f3dcfbf325c06b8868126472&"
+    ],
+    "approval_status": "approved",
+    "accepted_channel_id": 1391733933133271130
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "52b07c61": {
+    "quest_id": "52b07c61",
+    "title": "Killing Quest",
+    "description": "kill 5 players in game",
+    "creator_id": 1192089605600710787,
+    "guild_id": 1266086795091906664,
+    "requirements": "must have screenshot while submitting",
+    "reward": "60 Contribution point",
+    "rank": "easy",
+    "category": "hunting",
+    "status": "available",
+    "created_at": "2025-07-11T07:49:37.448328",
+    "required_role_ids": [
+      1389474689818296370,
+      1266826177163694181,
+      1308823565881184348
+    ]
+  },
+  "1047d735": {
+    "quest_id": "1047d735",
+    "title": "test",
+    "description": "testt",
+    "creator_id": 1192089605600710787,
+    "guild_id": 1266086795091906664,
+    "requirements": "test",
+    "reward": "test",
+    "rank": "easy",
+    "category": "other",
+    "status": "available",
+    "created_at": "2025-07-11T07:54:24.661688",
+    "required_role_ids": [
+      1350813729947779103
+    ]
+  }
+}
